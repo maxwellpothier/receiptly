@@ -1,0 +1,21 @@
+{
+	"name": "receiptly",
+	"version": "1.0.0",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"start": "tsx index.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"dotenv": "^16.4.5",
+		"twilio": "^5.3.4"
+	},
+	"devDependencies": {
+		"@types/node": "^22.7.6",
+		"typescript": "^5.6.3"
+	}
+}
