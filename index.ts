@@ -1,23 +1,31 @@
 import dotenv from "dotenv";
+import twilio from "twilio";
+import express from "express";
 dotenv.config();
 
-// Download the helper library from https://www.twilio.com/docs/node/install
-import twilio from "twilio";
+const app = express();
+const port = process.env.PORT || 3000;
 
-// Find your Account SID and Auth Token at twilio.com/console
-// and set the environment variables. See http://twil.io/secure
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
 
-async function createMessage() {
-	const message = await client.messages.create({
-		body: "From my code",
-		from: "+18446209126",
-		to: "+18777804236",
-	});
+app.use(express.urlencoded({extended: false}));
 
-	console.log(message.body);
-}
+app.post("/sms", (req, res) => {
+	const incomingMessage = req.body.Body;
+	const fromNumber = req.body.From;
 
-createMessage();
+	console.log(`Received message: "${incomingMessage}" from ${fromNumber}`);
+
+	// Send a response back to the user
+	const twiml = new twilio.twiml.MessagingResponse();
+	twiml.message("Thank you for your message!");
+
+	res.writeHead(200, {"Content-Type": "text/xml"});
+	res.end(twiml.toString());
+});
+
+app.listen(port, () => {
+	console.log(`Server is running on port ${port}`);
+});
